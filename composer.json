@@ -1,0 +1,22 @@
+{
+  "name": "guiiamorim/cronmaker",
+  "description": "A PHP library to manage and create cronjobs",
+  "minimum-stability": "stable",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "guiiamorim",
+      "email": "g.ferreiraamorim@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^8.0",
+    "ramsey/uuid": "^4.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "guiiamorim\\CronMaker\\": "src/"
+    }
+  }
+}
