@@ -5,7 +5,7 @@ namespace guiiamorim\CronMaker\Storage;
 use guiiamorim\CronMaker\Exception\FileNotFoundException;
 use guiiamorim\CronMaker\Job;
 
-class FilesystemHandler extends \DirectoryIterator
+class FilesystemHandler extends \DirectoryIterator implements StorageHandler
 {
     public function __construct($directory)
     {
@@ -17,7 +17,7 @@ class FilesystemHandler extends \DirectoryIterator
         return parent::getPath() . "/";
     }
 
-    public function find(string $uuid = null)
+    public function find(string $uuid = null): mixed
     {
         $jobs = [];
         $this->rewind();

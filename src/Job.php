@@ -12,6 +12,7 @@ class Job
     const JOB_INACTIVE = 0;
 
     public function __construct(
+        private string                    $action,
         private string|array              $command,
         private string                    $name,
         private string                    $user,
@@ -35,13 +36,14 @@ class Job
     public static function createFromGlobals(): Job
     {
         $params = $_POST ?: $_GET ?: json_decode(file_get_contents('php://input'), true);
+        $params = array_filter($params, fn($p) => (!empty($p) && $p !== "null") || $p == "0");
 
         foreach ($params as $param => $value) {
             if (!property_exists(self::class, $param))
                 unset($params[$param]);
 
             if ($param === "dateTime")
-                $params[$param] = \DateTime::createFromFormat('m-d H:i', $value);
+                $params[$param] = !empty($value) ? \DateTime::createFromFormat('m-d H:i', $value) : null;
         }
 
         return new self(...$params);
@@ -82,7 +84,7 @@ class Job
                 $this->hours,
                 $this->minutes
             ] = explode(",", $this->dateTime->format("m,d,H,i"));
-        } else {
+        } elseif ($notValid = ['*', '0', '00'] and !in_array($this->month, $notValid) and !in_array($this->day, $notValid)) {
             $this->dateTime = \DateTime::createFromFormat(
                 'm-d H:i',
                 str_replace(
@@ -110,7 +112,7 @@ class Job
         foreach ($data as $key => $value) {
             if (property_exists($this, $key))
                 if ($key === "dateTime")
-                    $this->$key = \DateTime::createFromFormat('m-d H:i', $value);
+                    $this->$key = !empty($value) ? \DateTime::createFromFormat('m-d H:i', $value) : null;
                 else
                     $this->$key = $value;
         }

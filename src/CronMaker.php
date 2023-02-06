@@ -8,7 +8,7 @@ use guiiamorim\CronMaker\Storage\FilesystemHandler;
 class CronMaker
 {
     public function __construct(
-        private FilesystemHandler $handler
+        private StorageHandler $handler
     ){}
 
     /**
