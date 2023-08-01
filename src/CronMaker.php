@@ -3,7 +3,7 @@
 namespace guiiamorim\CronMaker;
 
 use guiiamorim\CronMaker\Connection\Connector;
-use guiiamorim\CronMaker\Storage\FilesystemHandler;
+use guiiamorim\CronMaker\Storage\StorageHandler;
 
 class CronMaker
 {
