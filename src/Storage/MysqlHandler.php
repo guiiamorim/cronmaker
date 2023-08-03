@@ -27,11 +27,12 @@ class MysqlHandler extends \PDO implements StorageHandler
     {
         $stmt = "";
         try {
-            $fields = array_keys(array_filter($job->__serialize(), fn($v) => $v !== '' && $v !== null));
+            $jobArray = $job->__serialize();
+            $fields = array_keys(array_filter($jobArray, fn($v) => $v !== '' && $v !== null));
             $values = array_map(fn($v) => ":{$v}", $fields);
             $params = [];
             foreach ($fields as $field) {
-                $params[$field] = is_bool($job->$field) ? intval($job->$field) : $job->$field;
+                $params[$field] = is_bool($jobArray[$field]) ? intval($jobArray[$field]) : $jobArray[$field];
             }
             $update = array_map(fn($f, $v) => "{$f} = {$v}", $fields, $values);
 
