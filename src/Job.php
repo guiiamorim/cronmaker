@@ -21,7 +21,7 @@ class Job
         private string|int                $day = "*",
         private string|int                $month = "*",
         private string|int                $weekday = "*",
-        private ?\DateTime                $dateTime = null,
+        private \DateTime|string|null     $dateTime = null,
         private bool                      $oneTimeOnly = false,
         private int                       $status = self::JOB_ACTIVE,
         private UuidInterface|string|null $uuid = null,
@@ -75,8 +75,15 @@ class Job
         $this->atId = $atId;
     }
 
-    private function parseDate()
+    /**
+     * @throws \Exception
+     */
+    private function parseDate(): void
     {
+        if (is_string($this->dateTime)) {
+            $this->dateTime = new \DateTime($this->dateTime);
+        }
+
         if ($this->dateTime) {
             [
                 $this->month,
@@ -118,7 +125,7 @@ class Job
         }
     }
 
-    private function generateUuid()
+    private function generateUuid(): void
     {
         if (empty($this->uuid))
             $this->uuid = Uuid::uuid4();
